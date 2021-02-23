@@ -1,0 +1,24 @@
+# aws cloudformation package ... should work for this
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Cloudformation template for all the resources"
+
+Resources:
+  DynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      # TODO: Add properties for Dynamo DB table
+
+  CreateTodo:
+    Type: AWS::Lambda::Function
+    Properties:
+      # TODO: Add properties for create todo
+
+  ReadTodo:
+    Type: AWS::Lambda::Function
+    Properties:
+      # TODO: Add properties for read todo
+
+  # TODO: Add more resources as per requirement like lambda roles
+
+Outputs:
+# TODO: Add relevant outputs here (optional)
