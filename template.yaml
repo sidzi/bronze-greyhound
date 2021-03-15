@@ -6,19 +6,56 @@ Resources:
   DynamoDBTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      # TODO: Add properties for Dynamo DB table
-
+      AttributeDefinitions:
+        - AttributeName: "uuid"
+          AttributeType: "S"
+        - AttributeName: "title"
+          AttributeType: "S"
+        - AttributeName: "task"
+          AttributeType: "S"  
+      KeySchema:
+        - AttributeName: "uuid"
+          KeyType: "HASH"
+      ProvisionedThroughput:
+        ReadCapacityUnits: "2"
+        WriteCapacityUnits: "2"
+  
   CreateTodo:
     Type: AWS::Lambda::Function
     Properties:
-      # TODO: Add properties for create todo
+      Code: 
+        - ZipFile: "./zips/create-todo.zip"
+      Role: 
+        - !Ref ToDoLambdaRole
+      Runtime: "nodejs12.x"
 
   ReadTodo:
     Type: AWS::Lambda::Function
     Properties:
-      # TODO: Add properties for read todo
-
-  # TODO: Add more resources as per requirement like lambda roles
-
+      Code: 
+        - ZipFile: "./zips/read-todo.zip"
+      Runtime: "nodejs12.x"
+      Role: 
+        - !Ref ToDoLambdaRole 
+      
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+        - Effect: Allow
+          Principal:
+            Service:
+            - dynamodb.amazonaws.com
+          Action:
+          - dynamodb:Get*
+          - 
 Outputs:
 # TODO: Add relevant outputs here (optional)
