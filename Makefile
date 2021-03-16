@@ -40,7 +40,7 @@ test:
 .PHONY: deploy
 ## deploy: deploy the application locally
 deploy:
-	# TODO: to deploy the project on localhost
+	@aws --endpoint-url=http://localhost:4566 s3 cp function.zip s3://todo/code/create-todo.zip
 
 .PHONY: clean
 ## clean: clean all the local cache etc

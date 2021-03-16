@@ -3,41 +3,6 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: "Cloudformation template for all the resources"
 
 Resources:
-  DynamoDBTable:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      AttributeDefinitions:
-        - AttributeName: "uuid"
-          AttributeType: "S"
-        - AttributeName: "title"
-          AttributeType: "S"
-        - AttributeName: "task"
-          AttributeType: "S"  
-      KeySchema:
-        - AttributeName: "uuid"
-          KeyType: "HASH"
-      ProvisionedThroughput:
-        ReadCapacityUnits: "2"
-        WriteCapacityUnits: "2"
-  
-  CreateTodo:
-    Type: AWS::Lambda::Function
-    Properties:
-      Code: 
-        - ZipFile: "./zips/create-todo.zip"
-      Role: 
-        - !Ref ToDoLambdaRole
-      Runtime: "nodejs12.x"
-
-  ReadTodo:
-    Type: AWS::Lambda::Function
-    Properties:
-      Code: 
-        - ZipFile: "./zips/read-todo.zip"
-      Runtime: "nodejs12.x"
-      Role: 
-        - !Ref ToDoLambdaRole 
-      
   LambdaExecutionRole:
     Type: AWS::IAM::Role
     Properties:
@@ -50,12 +15,33 @@ Resources:
             - lambda.amazonaws.com
           Action:
           - sts:AssumeRole
-        - Effect: Allow
-          Principal:
-            Service:
-            - dynamodb.amazonaws.com
-          Action:
-          - dynamodb:Get*
-          - 
-Outputs:
-# TODO: Add relevant outputs here (optional)
+
+  DynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "uuid"
+          AttributeType: "S"  
+      KeySchema:
+        - AttributeName: "uuid"
+          KeyType: "HASH"
+      ProvisionedThroughput:
+        ReadCapacityUnits: "2"
+        WriteCapacityUnits: "2"
+  
+  CreateTodo:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code: 
+        S3Bucket: todo
+        S3Key: code/create-todo.zip
+      Runtime: "nodejs12.x"
+      # Role: !GetAtt LambdaExecutionRole.Arn
+
+  # ReadTodo:
+  #   Type: AWS::Lambda::Function
+  #   Properties:
+  #     Code: 
+  #       - ZipFile: "./zips/read-todo.zip"
+  #     Runtime: "nodejs12.x"
+  #     Role: !GetAtt LambdaExecutionRole
