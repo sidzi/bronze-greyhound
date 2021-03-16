@@ -28,7 +28,7 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: "2"
         WriteCapacityUnits: "2"
-  
+        
   CreateTodo:
     Type: AWS::Lambda::Function
     Properties:
@@ -36,7 +36,7 @@ Resources:
         S3Bucket: todo
         S3Key: code/create-todo.zip
       Runtime: "nodejs12.x"
-      # Role: !GetAtt LambdaExecutionRole.Arn
+      Role: !GetAtt LambdaExecutionRole.Arn
 
   # ReadTodo:
   #   Type: AWS::Lambda::Function
