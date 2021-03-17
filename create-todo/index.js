@@ -18,9 +18,11 @@ exports.handler =  async function (event, context) {
 	};
 	
 	try{
+		console.log("Put Starting");
 		await docClient.put(params).promise();
+		console.log("Put Done");
 	}catch(e){
-		console.log(e);
+		console.error(e);
 		return {
 			success: false,
 			error: JSON.stringify(e)

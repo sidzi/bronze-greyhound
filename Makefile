@@ -21,7 +21,7 @@ run-dev:
 ## add-todo: adds a todo in the app
 add-todo:
 	# TODO: Adds a todo in the app. Should accept the relevant data
-	@aws --endpoint-url=http://localhost:4566 lambda invoke --function-name test-lambda-393942b0 --payload '{}' response.json
+	@aws --endpoint-url=http://localhost:4566 lambda invoke --function-name test-lambda-92fac733 --payload '{}' response.json
 
 .PHONY: read-todo
 ## read-todo: reads a single or all todos in the app
@@ -49,7 +49,7 @@ deploy:
 	@mkdir -p out/
 	@cd create-todo/ && zip -r ../out/create-todo.zip *
 	@aws --endpoint-url=http://localhost:4566 s3 cp out/create-todo.zip s3://todo/code/
-	@aws --endpoint-url=http://localhost:4566 lambda update-function-code --function-name test-lambda-393942b0 --s3-key code/create-todo.zip --s3-bucket todo
+	@aws --endpoint-url=http://localhost:4566 lambda update-function-code --function-name test-lambda-92fac733 --s3-key code/create-todo.zip --s3-bucket todo
 
 .PHONY: clean
 ## clean: clean all the local cache etc
