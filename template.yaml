@@ -50,10 +50,12 @@ Resources:
       Role: !GetAtt LambdaExecutionRole.Arn
 
 
-  # ReadTodo:
-  #   Type: AWS::Lambda::Function
-  #   Properties:
-  #     Code: 
-  #       - ZipFile: "./zips/read-todo.zip"
-  #     Runtime: "nodejs12.x"
-  #     Role: !GetAtt LambdaExecutionRole
+  ReadTodo:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: index.handler
+      Code: 
+        S3Bucket: todo
+        S3Key: code/read-todo.zip
+      Runtime: "nodejs12.x"
+      Role: !GetAtt LambdaExecutionRole.Arn
