@@ -9,9 +9,11 @@ install-dependencies:
 	@aws --endpoint-url=http://localhost:4566 s3 mb s3://todo || exit 0
 	@cd create-todo/ && npm ci
 
+
 .PHONY: run-dev
 ## run-dev: start dev environment
 run-dev:
+	@aws --endpoint-url=http://localhost:4566 s3 cp out/create-todo.zip s3://todo/code/
 	@aws --endpoint-url=http://localhost:4566 cloudformation create-stack --stack-name test --template-body file://template.yaml
 	# TODO: Dev command for development e.g. running localstack from docker
 
@@ -19,7 +21,7 @@ run-dev:
 ## add-todo: adds a todo in the app
 add-todo:
 	# TODO: Adds a todo in the app. Should accept the relevant data
-	@aws --endpoint-url=http://localhost:4566 lambda invoke --function-name create-todo --payload '{}' response.json
+	@aws --endpoint-url=http://localhost:4566 lambda invoke --function-name test-lambda-393942b0 --payload '{}' response.json
 
 .PHONY: read-todo
 ## read-todo: reads a single or all todos in the app
@@ -45,14 +47,15 @@ test:
 ## deploy: deploy the application locally
 deploy:
 	@mkdir -p out/
-	@zip out/create-todo.zip create-todo/* 
-	@aws --endpoint-url=http://localhost:4566 s3 cp out/create-todo.zip s3://todo/code/create-todo.zip
+	@cd create-todo/ && zip -r ../out/create-todo.zip *
+	@aws --endpoint-url=http://localhost:4566 s3 cp out/create-todo.zip s3://todo/code/
+	@aws --endpoint-url=http://localhost:4566 lambda update-function-code --function-name test-lambda-393942b0 --s3-key code/create-todo.zip --s3-bucket todo
 
 .PHONY: clean
 ## clean: clean all the local cache etc
 clean:
 	# TODO: any local cache cleanup (optional)
-
+	@aws --endpoint-url=http://localhost:4566 cloudformation delete-stack --stack-name test
 .PHONY: help
 ## help: show the helo menu
 all: help

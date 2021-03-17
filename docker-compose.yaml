@@ -2,3 +2,17 @@
 # TODO: Create a single image for (optional)
 # - Deploying Cloudformation
 # - A url for hitting lambdas
+version: '3'
+
+services:
+  localstack:
+    network_mode: "host"  
+    image: localstack/localstack
+    ports:
+      - '4574:4574'
+      - '4566:4566'
+    environment:
+      LAMBDA_EXECUTOR: docker
+      DOCKER_HOST: unix:///var/run/docker.sock
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"

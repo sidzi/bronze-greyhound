@@ -1,11 +1,9 @@
-
 const { v4: uuidv4 } = require('uuid');
-
+const AWS = require('aws-sdk');
 const docClient = new AWS.DynamoDB.DocumentClient()
-const table = process.env.table
+const table = process.env.table || "test-DynamoDBTable-da84343b"
 
-
-exports.handler = async function (event, context) {
+exports.handler =  async function (event, context) {
 
 	console.log(JSON.stringify(event));
 
@@ -25,7 +23,7 @@ exports.handler = async function (event, context) {
 		console.log(e);
 		return {
 			success: false,
-			error: JSON.stringify(e);
+			error: JSON.stringify(e)
 		};
 	}
 	
