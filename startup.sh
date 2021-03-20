@@ -5,6 +5,8 @@ export AWS_DEFAULT_REGION=us-west-2
 
 docker-compose up -d
 
+sleep 10
+
 make clean
 
 make install-dependencies
