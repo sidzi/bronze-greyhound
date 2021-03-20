@@ -7,14 +7,17 @@ SHELL := /bin/bash
 install-dependencies:
 	# TODO: Install all the relevant dependencies for the project e.g, Lambdas
 	@aws --endpoint-url=http://localhost:4566 s3 mb s3://todo || exit 0
-	@cd create-todo/ && npm ci
-	@cd read-todo/ && npm ci
+	@cd create-todo/ && npm ci --prod
+	@cd read-todo/ && npm ci --prod
 
 	@cd create-todo/ && zip -r ../out/create-todo.zip *
 	@aws --endpoint-url=http://localhost:4566 s3 cp out/create-todo.zip s3://todo/code/
 
 	@cd read-todo/ && zip -r ../out/read-todo.zip *
 	@aws --endpoint-url=http://localhost:4566 s3 cp out/read-todo.zip s3://todo/code/
+
+	# Test Dependencies
+	@cd test/ && npm i --also=dev
 
 
 .PHONY: run-dev
@@ -51,7 +54,7 @@ link-check:
 ## test: run tests on the deployed version
 test:
 	# TODO: To run end to end tests on the application
-
+	cd test && node ./node_modules/jest/bin/jest.js
 .PHONY: deploy
 ## deploy: deploy the application locally
 deploy:

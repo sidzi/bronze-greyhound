@@ -42,6 +42,7 @@ Resources:
   DynamoDBTable:
     Type: AWS::DynamoDB::Table
     Properties:
+      TableName: TableForTODOS
       AttributeDefinitions:
         - AttributeName: "uuid"
           AttributeType: "S"  
