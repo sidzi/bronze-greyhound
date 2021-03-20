@@ -3,9 +3,32 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: "Cloudformation template for all the resources"
 
 Resources:
+
+  DynamoDBManagedPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: 'PolicyForLambdaDynamoDB'
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - 
+            Sid: LambdaReadAndWrite 
+            Effect: Allow
+            Action:
+            - dynamodb:GetItem
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:BatchWriteItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            Resource: "*"
+
+
   LambdaExecutionRole:
     Type: AWS::IAM::Role
     Properties:
+      ManagedPolicyArns:
+        - !Ref DynamoDBManagedPolicy
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -15,16 +38,6 @@ Resources:
             - lambda.amazonaws.com
           Action:
           - sts:AssumeRole
-
-        - Effect: Allow
-          Action:
-          - dynamodb:GetItem
-          - dynamodb:Query
-          - dynamodb:Scan
-          - dynamodb:BatchWriteItem
-          - dynamodb:PutItem
-          - dynamodb:UpdateItem
-          Resource: "*"
 
   DynamoDBTable:
     Type: AWS::DynamoDB::Table
@@ -42,6 +55,7 @@ Resources:
   CreateTodo:
     Type: AWS::Lambda::Function
     Properties:
+      FunctionName: create-todo-function
       Handler: index.handler
       Code: 
         S3Bucket: todo
@@ -53,6 +67,7 @@ Resources:
   ReadTodo:
     Type: AWS::Lambda::Function
     Properties:
+      FunctionName: read-todo-function
       Handler: index.handler
       Code: 
         S3Bucket: todo

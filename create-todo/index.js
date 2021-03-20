@@ -1,33 +1,41 @@
 const { v4: uuidv4 } = require('uuid');
 const AWS = require('aws-sdk');
-const docClient = new AWS.DynamoDB.DocumentClient()
-const table = process.env.table || "test-DynamoDBTable-da84343b"
+const docClient = new AWS.DynamoDB({accessKeyId:'test',secretAccessKey:'test', region:'us-west-2', endpoint: 'http://localhost:4566'})
+const table = "test-DynamoDBTable-9fe736a8"
 
 exports.handler =  async function (event, context) {
 
 	console.log(JSON.stringify(event));
-
-	const item = {};
-	item.uuid = uuidv4();
-	item.title = event.title;
-	item.task = event.task;
+	const item = {
+		uuid: {
+			"S":  uuidv4().toString()
+		},
+		title:{
+			"S": event.title || "Untitled"
+		},
+		task: {
+			"S": event.task || "Task description goes here ...."
+		}
+	};
 
 	var params = {
 		TableName: table,
 		Item: item
 	};
 	
-	try{
-		console.log("Put Starting");
-		await docClient.put(params).promise();
-		console.log("Put Done");
-	}catch(e){
-		console.error(e);
+	// try{
+		await docClient.putItem(params).promise();
+	/*}catch(e){
+		console.log(e);
 		return {
 			success: false,
+			meta: {
+				params
+			},
 			error: JSON.stringify(e)
 		};
 	}
+	*/
 	
 	return {
 		success: true,
