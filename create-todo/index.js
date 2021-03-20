@@ -5,7 +5,9 @@ const {createTODO} = require('./create-todo');
 
 exports.handler =  async function (event, context) {
 	console.log(JSON.stringify(event));
+	
 	const data  = await createTODO(docClient, event);
+	
 	return {
 		success: true,
 		data: data

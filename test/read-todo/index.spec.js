@@ -4,7 +4,7 @@ describe('Create TODO Tests', ()=>{
 	it('Should read a todo', async ()=> {
 		const mockGettemPromise = jest.fn(()=>{}); 
 		const result = readTODO({
-			get: ()=>{
+			getItem: ()=>{
 				return {
 					promise:() => new mockGettemPromise()
 				}

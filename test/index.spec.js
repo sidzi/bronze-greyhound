@@ -6,7 +6,8 @@ const http = require('axios').default;
 
 describe('End to End TODO Tests', ()=> {
 	beforeAll(()=>{
-		jest.setTimeout(10000);
+		// TODO Clean Up the Table
+		jest.setTimeout(20000);
 	})
 
 	it('Should create multiple todos', async (done)=> {
@@ -23,29 +24,24 @@ describe('End to End TODO Tests', ()=> {
 		done();
 	})
 
-	// it('Should read all todos', async (done)=>{
-	// 		const response = await http.post('http://localhost:4566/2015-03-31/functions/read-todo-function/invocations', {
-	// 			'task': 'all'
-	// 		})
-	// 		console.log(response.status);
-	// 		expect(response.status).toBe(200);
-	// 		const dataString = JSON.stringify(response.data);
-	// 		console.log(dataString);
-	// 		const data = JSON.parse(dataString);
+	it('Should read all todos', async (done)=>{
+			const response = await http.post('http://localhost:4566/2015-03-31/functions/read-todo-function/invocations', {
+				'task': 'all'
+			})
+			expect(response.status).toBe(200);			
+			expect(response.data.success).toBe(true);
+			console.log(response.data);	
+			done();
+	});
 
-	// 		expect(data.success).toBe(true);
-	// });
-
-	// it('Should read all todos', async (done)=>{
-	// 		const response = await http.post('http://localhost:4566/2015-03-31/functions/read-todo-function/invocations', {
-	// 			'task': '129fb230-c96e-44c4-a116-dcda60031a84'
-	// 		})
-	// 		console.log(response.status);
-	// 		expect(response.status).toBe(200);
-	// 		const dataString = JSON.stringify(response.data);
-	// 		console.log(dataString);
-	// 		const data = JSON.parse(dataString);
-	// 		expect(data.success).toBe(true);
-	// 		expect(data.data.title).toBe("Hello");
-	// });
+	it('Should read a specific todo', async (done)=>{
+			const response = await http.post('http://localhost:4566/2015-03-31/functions/read-todo-function/invocations', {
+				'task': 'f82ad48b-566b-4b0e-9776-d6b74b6fa990'
+			})
+			expect(response.status).toBe(200);
+			console.log(response.data);	
+			expect(response.data.success).toBe(true);
+			expect(response.data.data.Item.title.S).toBe("Hello World !");
+			done();
+	});
 })

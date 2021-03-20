@@ -5,6 +5,9 @@
 Sample TODO application using lambdas and dynamoDB.
 TODO: Add more description here
 
+## Getting Started
+- run `./startup.sh`
+
 ## Features
 
 - [ ] DynamoDB for storing todos
