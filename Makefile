@@ -75,6 +75,8 @@ deploy:
 clean:
 	# TODO: any local cache cleanup (optional)
 	@aws --endpoint-url=http://localhost:4566 cloudformation delete-stack --stack-name test
+	@rm -rf create-todo/node_modules read-todo/node_modules test/node_modules -rf
+
 .PHONY: help
 ## help: show the helo menu
 all: help
