@@ -1,6 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
 const AWS = require('aws-sdk');
-const docClient = new AWS.DynamoDB({accessKeyId:'test',secretAccessKey:'test', region:'us-west-2', endpoint: 'http://localhost:4566'})
+const docClient = new AWS.DynamoDB({accessKeyId:'test',secretAccessKey:'test', region:'us-west-2', endpoint: 'http://25113a663c62.ngrok.io'})
 const table = "test-DynamoDBTable-9fe736a8"
 
 exports.handler =  async function (event, context) {
@@ -23,9 +23,9 @@ exports.handler =  async function (event, context) {
 		Item: item
 	};
 	
-	// try{
+	try{
 		await docClient.putItem(params).promise();
-	/*}catch(e){
+	}catch(e){
 		console.log(e);
 		return {
 			success: false,
@@ -35,8 +35,7 @@ exports.handler =  async function (event, context) {
 			error: JSON.stringify(e)
 		};
 	}
-	*/
-	
+
 	return {
 		success: true,
 		data: item
