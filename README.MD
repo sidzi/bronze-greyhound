@@ -7,6 +7,8 @@ TODO: Add more description here
 
 ## Getting Started
 - run `./startup.sh`
+- replace localhost:4566 urls in read and create todo scripts with ngrok links ( workaround for docker lambda executor not running in the same network as localstack )
+- run `make deploy` and `make test`
 
 ## Features
 
