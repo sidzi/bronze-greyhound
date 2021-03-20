@@ -6,7 +6,6 @@ version: '3'
 
 services:
   localstack:
-    network_mode: "host"  
     image: localstack/localstack
     ports:
       - '4574:4574'
